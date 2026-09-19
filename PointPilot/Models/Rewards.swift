@@ -6,6 +6,9 @@ enum RewardCategory: String, Codable, CaseIterable, Sendable {
     case groceries
     case travel
     case gas
+    /// Apparel and general retail. Named to match how issuers market it.
+    case clothing
+    case entertainment
     case other
 
     var displayName: String {
@@ -14,6 +17,8 @@ enum RewardCategory: String, Codable, CaseIterable, Sendable {
         case .groceries: return "Groceries"
         case .travel: return "Travel"
         case .gas: return "Gas"
+        case .clothing: return "Shopping"
+        case .entertainment: return "Entertainment"
         case .other: return "Everything else"
         }
     }

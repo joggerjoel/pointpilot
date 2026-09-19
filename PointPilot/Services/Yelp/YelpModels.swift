@@ -57,6 +57,18 @@ struct YelpBusiness: Codable, Identifiable, Sendable {
         if aliases.contains(where: { $0.contains("hotel") || $0.contains("airline") || $0.contains("travel") }) {
             return .travel
         }
+        if aliases.contains(where: {
+            $0.contains("clothing") || $0.contains("apparel") || $0.contains("fashion")
+                || $0.contains("shoes") || $0.contains("departmentstore")
+        }) {
+            return .clothing
+        }
+        if aliases.contains(where: {
+            $0.contains("cinema") || $0.contains("movietheater") || $0.contains("musicvenue")
+                || $0.contains("theater") || $0.contains("amusement") || $0.contains("entertainment")
+        }) {
+            return .entertainment
+        }
 
         return .dining
     }

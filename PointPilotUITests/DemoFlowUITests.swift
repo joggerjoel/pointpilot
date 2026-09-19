@@ -130,6 +130,7 @@ final class DemoFlowUITests: XCTestCase {
     /// Regression test: every tap re-ran the greeting, so the transcript filled
     /// with identical messages.
     func testRepeatedMicrophoneTapsDoNotDuplicateTheGreeting() {
+        goToFindCardScreen()
         let voiceButton = app.buttons["voiceButton"]
         XCTAssertTrue(voiceButton.waitForExistence(timeout: 10), "Voice button should be visible")
 
@@ -161,6 +162,7 @@ final class DemoFlowUITests: XCTestCase {
     /// The hierarchy exposes speaker, time and message as separate elements, so
     /// the assertion matches each rather than expecting one merged label.
     func testTranscriptLineExposesLocalTimestamp() {
+        goToFindCardScreen()
         let voiceButton = app.buttons["voiceButton"]
         XCTAssertTrue(voiceButton.waitForExistence(timeout: 10))
         voiceButton.tap()
@@ -182,6 +184,7 @@ final class DemoFlowUITests: XCTestCase {
 
     /// Tapping a nearby merchant chip auto-populates the merchant field.
     func testNearbyMerchantChipPopulatesMerchantField() {
+        goToFindCardScreen()
         let nobuChip = app.buttons["chip_nobu"]
         XCTAssertTrue(nobuChip.waitForExistence(timeout: 10), "Nearby merchant chip should appear")
         nobuChip.tap()
@@ -192,6 +195,7 @@ final class DemoFlowUITests: XCTestCase {
 
     /// The wallet sheet lists all three sample cards.
     func testWalletShowsAllSampleCards() {
+        goToFindCardScreen()
         let walletButton = app.buttons["Wallet"]
         XCTAssertTrue(walletButton.waitForExistence(timeout: 10))
         walletButton.tap()
@@ -216,8 +220,24 @@ final class DemoFlowUITests: XCTestCase {
 
     // MARK: - Helpers
 
+    /// Navigates from the home screen into the card finder.
+    ///
+    /// The app opens on the home screen, so every test that drives the finder
+    /// has to get there first. Kept in one helper so a change to the home
+    /// layout only needs updating in a single place.
+    private func goToFindCardScreen() {
+        let findCard = app.buttons["homeFindCardButton"]
+        XCTAssertTrue(
+            findCard.waitForExistence(timeout: 10),
+            "The home screen should be visible on launch"
+        )
+        findCard.tap()
+    }
+
     /// Types a merchant and amount, then taps the primary action.
     private func enterPurchase(merchant: String, amount: String) {
+        goToFindCardScreen()
+
         let merchantField = app.textFields["merchantField"]
         XCTAssertTrue(merchantField.waitForExistence(timeout: 10), "Ask screen should be visible")
         merchantField.tap()

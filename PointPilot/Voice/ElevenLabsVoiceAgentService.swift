@@ -7,16 +7,20 @@ import Combine
 /// The real ElevenLabs conversational-agent integration.
 ///
 /// This file is compiled **only** when the ElevenLabs Swift SDK is present, so
-/// the project builds and demos without it. To enable it:
+/// the project builds and demos without it. It is declared as a package
+/// dependency in `project.yml`; remove that entry to fall back to
+/// `MockVoiceAgentService`.
 ///
-/// 1. Add the package in Xcode:
-///    File ▸ Add Package Dependencies…
-///    `https://github.com/elevenlabs/elevenlabs-swift-sdk.git` (2.0.0 or later)
-/// 2. Add the ElevenLabs target to the PointPilot app target's frameworks.
-/// 3. Put your public agent ID in `Config/ElevenLabs.plist` (gitignored).
-/// 4. Configure the agent in the ElevenLabs dashboard with a **client** tool
-///    named `recommendCard` taking `merchant` (string) and `amount` (number),
-///    and set `CLIENT_TOOL_NAMESPACE` below to the same name.
+/// Remaining dashboard setup:
+///
+/// 1. Put your public agent ID in `Config/ElevenLabs.plist` (gitignored).
+/// 2. Configure the agent in the ElevenLabs dashboard with a **client** tool
+///    named `recommendCard` taking `merchant` (string) and `amount` (number).
+///    The name must match `clientToolNamespace` below.
+///
+/// Only the public agent ID belongs in the app. An API key is a server-side
+/// secret and must never be shipped in a binary — for a private agent, mint a
+/// conversation token on a backend and use the `conversationToken:` overload.
 ///
 /// The agent is instructed to call `recommendCard` rather than do arithmetic
 /// itself, and to speak only the figures the app returns. Activation is
@@ -31,6 +35,13 @@ final class ElevenLabsVoiceAgentService: VoiceAgentProviding {
     private let configuration: ElevenLabsConfiguration
     private var conversation: Conversation?
     private var cancellables = Set<AnyCancellable>()
+
+    /// Tool calls already dispatched to the app.
+    ///
+    /// `pendingToolCalls` stays populated until a result is sent, so without
+    /// this the same call would fire a second recommendation on every
+    /// subsequent publish.
+    private var handledToolCallIDs = Set<String>()
 
     /// Must match the client-tool name configured on the ElevenLabs agent.
     private static let clientToolNamespace = "recommendCard"
@@ -48,13 +59,14 @@ final class ElevenLabsVoiceAgentService: VoiceAgentProviding {
 
         onStateChange?(.idle)
 
+        let config = ConversationConfig(
+            conversationOverrides: ConversationOverrides(textOnly: false),
+            userId: configuration.userID
+        )
+
         do {
-            let config = ConversationConfig(
-                conversationOverrides: ConversationOverrides(textOnly: false)
-            )
             let conversation = try await ElevenLabs.startConversation(
                 agentId: agentID,
-                userId: configuration.userID,
                 config: config
             )
             self.conversation = conversation
@@ -68,6 +80,7 @@ final class ElevenLabsVoiceAgentService: VoiceAgentProviding {
         await conversation?.endConversation()
         conversation = nil
         cancellables.removeAll()
+        handledToolCallIDs.removeAll()
         onStateChange?(.idle)
     }
 
@@ -96,48 +109,75 @@ final class ElevenLabsVoiceAgentService: VoiceAgentProviding {
                 self?.onMessage?(VoiceMessage(speaker: speaker, text: latest.content))
             }
             .store(in: &cancellables)
+
+        conversation.$pendingToolCalls
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] toolCalls in
+                guard let self else { return }
+                for toolCall in toolCalls {
+                    self.handle(toolCall: toolCall)
+                }
+            }
+            .store(in: &cancellables)
     }
 
-    private static func voiceState(for state: Conversation.State) -> VoiceState {
+    private static func voiceState(for state: ConversationState) -> VoiceState {
         switch state {
         case .idle: return .idle
         case .connecting, .active: return .listening
         case .ended: return .idle
-        case .error: return .unavailable(VoiceAgentError.connectionFailed("session error").localizedDescription)
+        case .error(let error):
+            return .unavailable(error.localizedDescription)
         }
     }
 
     // MARK: - Client tools
 
-    /// Registers the `recommendCard` client tool handler.
+    /// Dispatches a `recommendCard` call to the app and acknowledges it.
     ///
     /// The agent supplies `merchant` and `amount`; the app computes the
-    /// recommendation and returns a compact payload of engine facts for the
-    /// agent to read back verbatim.
-    ///
-    /// Wiring point: with the ElevenLabs Swift SDK the handler is registered on
-    /// the conversation after it starts, e.g.
-    /// `conversation.registerClientTool(name: Self.clientToolNamespace) { params in ... }`.
-    /// The exact registration call follows the SDK's Client Tools guide for the
-    /// version you add; the payload returned here is what the agent may speak.
-    private func handleClientTool(parameters: [String: Any]) -> [String: Any] {
+    /// recommendation and presents it. The acknowledgement only confirms the
+    /// call was received — the engine, not the agent, owns the numbers.
+    private func handle(toolCall: ClientToolCallEvent) {
+        guard toolCall.toolName == Self.clientToolNamespace else { return }
+        guard !handledToolCallIDs.contains(toolCall.toolCallId) else { return }
+        handledToolCallIDs.insert(toolCall.toolCallId)
+
+        let payload = (try? JSONSerialization.jsonObject(with: toolCall.parametersData)) as? [String: Any]
+
         guard
-            let merchant = parameters["merchant"] as? String,
-            let amountValue = parameters["amount"] as? Double
+            let merchant = payload?["merchant"] as? String,
+            let amount = Self.decimal(from: payload?["amount"])
         else {
-            return ["error": "merchant and amount are required"]
+            respond(to: toolCall.toolCallId, result: ToolAcknowledgement(status: nil, error: "merchant and amount are required"), isError: true)
+            return
         }
 
-        let request = RecommendationRequest(
-            merchant: merchant,
-            amount: Decimal(amountValue),
-            category: .dining
+        onRecommendationRequest?(
+            RecommendationRequest(merchant: merchant, amount: amount, category: .dining)
         )
-        onRecommendationRequest?(request)
+        respond(to: toolCall.toolCallId, result: ToolAcknowledgement(status: "computing", error: nil), isError: false)
+    }
 
-        // The view model answers this request and produces the spoken facts;
-        // this acknowledgement only confirms the tool was received.
-        return ["status": "computing"]
+    private func respond(to toolCallID: String, result: ToolAcknowledgement, isError: Bool) {
+        Task { [conversation] in
+            try? await conversation?.sendToolResult(for: toolCallID, result: result, isError: isError)
+        }
+    }
+
+    /// JSON numbers arrive as `NSNumber`, but a coercing agent may send a string.
+    private static func decimal(from value: Any?) -> Decimal? {
+        switch value {
+        case let number as NSNumber: return number.decimalValue
+        case let text as String: return Decimal(string: text)
+        default: return nil
+        }
+    }
+
+    /// The tool result the agent receives. Encodable so the SDK sends valid JSON.
+    private struct ToolAcknowledgement: Encodable {
+        let status: String?
+        let error: String?
     }
 }
 

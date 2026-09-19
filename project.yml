@@ -6,6 +6,11 @@ options:
   createIntermediateGroups: true
   groupSortPosition: top
 
+packages:
+  ElevenLabs:
+    url: https://github.com/elevenlabs/elevenlabs-swift-sdk.git
+    from: "3.3.1"
+
 settings:
   base:
     SWIFT_VERSION: "5.0"
@@ -21,8 +26,48 @@ targets:
     deploymentTarget: "17.0"
     sources:
       - path: PointPilot
+    dependencies:
+      # Optional: powers the real voice agent. When absent the app still builds
+      # and runs on MockVoiceAgentService (ElevenLabsVoiceAgentService is behind
+      # `#if canImport(ElevenLabs)`).
+      - package: ElevenLabs
+        product: ElevenLabs
+    preBuildScripts:
+      # Copies the repository-root .env into the app bundle so AppEnvironment
+      # can read it at runtime. The app cannot read the repo root directly:
+      # FileManager.currentDirectoryPath is "/" inside a running app, and a
+      # sandboxed iOS app cannot open files outside its own container. Keeping
+      # .env at the repo root as the single source of truth and copying it in
+      # at build time is what makes that path actually work.
+      - name: Bundle .env
+        basedOnDependencyAnalysis: false
+        script: |
+          set -e
+          SRC="${SRCROOT}/.env"
+          RES="${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
+          OUT="$RES/PointPilot.env"
+          mkdir -p "$RES"
+          if [ -f "$SRC" ]; then
+            # Copy only the keys the app reads. Everything else in .env —
+            # notably an ElevenLabs API key, which is a server-side secret — 
+            # must never be written into a shipped binary, where it could be
+            # extracted. Grep (not source/eval) keeps values out of the log.
+            if grep -E '^(YELP_API_KEY|YELP_TOKEN|ELEVENLABS_AGENT_ID)=' "$SRC" > "$OUT"; then
+              :
+            else
+              rm -f "$OUT"
+            fi
+          else
+            rm -f "$OUT"
+          fi
     settings:
       base:
+        # The "Bundle .env" script reads .env from the project root, which lies
+        # outside the script sandbox's permitted roots. Sandboxing is disabled
+        # for this target so the copy works; it is the target's only script
+        # phase. Declaring the file as an input instead would fail the build
+        # whenever .env is absent, which must stay valid.
+        ENABLE_USER_SCRIPT_SANDBOXING: "NO"
         PRODUCT_BUNDLE_IDENTIFIER: com.example.PointPilot
         PRODUCT_NAME: PointPilot
         MARKETING_VERSION: "1.0"
@@ -36,8 +81,10 @@ targets:
         INFOPLIST_KEY_UISupportedInterfaceOrientations: "UIInterfaceOrientationPortrait"
         INFOPLIST_KEY_CFBundleDisplayName: PointPilot
         TARGETED_DEVICE_FAMILY: "1"
-        # Config/ElevenLabs.plist is gitignored and optional. When present it is
-        # copied into the bundle; when absent the app runs in local demo mode.
+        # The ElevenLabs agent ID is optional and read at runtime. Put it at
+        # PointPilot/Config/ElevenLabs.plist (gitignored, inside the scanned
+        # source path so XcodeGen bundles it as a resource), then run
+        # `xcodegen generate`. Without it the app runs in local demo mode.
         INFOPLIST_KEY_UIUserInterfaceStyle: Automatic
 
   PointPilotTests:

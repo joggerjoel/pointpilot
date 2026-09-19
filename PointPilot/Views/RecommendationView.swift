@@ -46,48 +46,58 @@ struct RecommendationView: View {
     // MARK: - Value
 
     private var valueSummary: some View {
-        VStack(alignment: .leading, spacing: Theme.Spacing.tight) {
-            Text("Estimated reward value")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+        SoftCard {
+            HStack(alignment: .top, spacing: Theme.Spacing.standard) {
+                VStack(alignment: .leading, spacing: Theme.Spacing.tight) {
+                    Text("Estimated reward value")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
 
-            Text(Currency.string(winner.totalValue))
-                .font(.system(.largeTitle, design: .rounded).weight(.bold))
-                .foregroundStyle(Color.accentColor)
-                .accessibilityLabel("Estimated reward value \(Currency.string(winner.totalValue))")
-                .accessibilityIdentifier("estimatedValueText")
+                    // The visible figure counts up, but the accessibility label
+                    // is pinned to the final amount: VoiceOver must never read
+                    // a part-way number, and a test asserting on the label must
+                    // not race the animation.
+                    CountUpCurrencyText(value: winner.totalValue, color: .accentColor)
+                        .accessibilityLabel(
+                            "Estimated reward value \(Currency.string(winner.totalValue))"
+                        )
+                        .accessibilityIdentifier("estimatedValueText")
 
-            Text("at \(recommendation.merchantName) on \(Currency.string(recommendation.amount))")
-                .font(.footnote)
-                .foregroundStyle(.secondary)
+                    Text("at \(recommendation.merchantName) on \(Currency.string(recommendation.amount))")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
 
-            if let runnerUp = recommendation.runnerUp {
-                let advantage = recommendation.advantageOverRunnerUp
-                if advantage > 0 {
-                    Label(
-                        "\(Currency.string(advantage)) more than your \(runnerUp.card.name)",
-                        systemImage: "arrow.up.right.circle.fill"
-                    )
-                    .font(.subheadline.weight(.medium))
-                    .foregroundStyle(.green)
-                    .padding(.top, 2)
-                } else {
-                    Label(
-                        "Tied with your \(runnerUp.card.name)",
-                        systemImage: "equal.circle.fill"
-                    )
-                    .font(.subheadline.weight(.medium))
-                    .foregroundStyle(.secondary)
-                    .padding(.top, 2)
+                    if let runnerUp = recommendation.runnerUp {
+                        let advantage = recommendation.advantageOverRunnerUp
+                        if advantage > 0 {
+                            Label(
+                                "\(Currency.string(advantage)) more than your \(runnerUp.card.name)",
+                                systemImage: "arrow.up.right.circle.fill"
+                            )
+                            .font(.subheadline.weight(.medium))
+                            .foregroundStyle(.green)
+                            .padding(.top, 2)
+                        } else {
+                            Label(
+                                "Tied with your \(runnerUp.card.name)",
+                                systemImage: "equal.circle.fill"
+                            )
+                            .font(.subheadline.weight(.medium))
+                            .foregroundStyle(.secondary)
+                            .padding(.top, 2)
+                        }
+                    }
                 }
+
+                Spacer(minLength: 0)
+
+                IllustrationView(
+                    subject: IllustrationSubject.forCategory(recommendation.category),
+                    size: 72
+                )
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(Theme.Spacing.section)
-        .background(
-            RoundedRectangle(cornerRadius: Theme.Radius.card, style: .continuous)
-                .fill(Color(.secondarySystemGroupedBackground))
-        )
+        .transition(.scale(scale: 0.96).combined(with: .opacity))
     }
 
     // MARK: - Comparison
@@ -100,7 +110,7 @@ struct RecommendationView: View {
                 Text("How the others compare")
                     .font(.headline)
 
-                ForEach(others) { evaluation in
+                ForEach(Array(others.enumerated()), id: \.element.id) { index, evaluation in
                     HStack {
                         Text(evaluation.card.name)
                             .font(.subheadline)
@@ -114,6 +124,10 @@ struct RecommendationView: View {
                     .accessibilityLabel(
                         "\(evaluation.card.name), \(Currency.string(evaluation.totalValue))"
                     )
+                    // Rows arrive in sequence so the ranking reads as a list
+                    // rather than appearing all at once.
+                    .transition(.move(edge: .trailing).combined(with: .opacity))
+                    .animation(Delight.stagger(index), value: recommendation.id)
 
                     if evaluation.id != others.last?.id {
                         Divider()

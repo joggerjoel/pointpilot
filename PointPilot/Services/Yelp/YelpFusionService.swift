@@ -1,5 +1,13 @@
 import Foundation
 
+/// The slice of `URLSession` this client needs, so tests can inject canned
+/// responses and exercise the failure paths without any network access.
+protocol URLSessionProtocol: Sendable {
+    func data(for request: URLRequest) async throws -> (Data, URLResponse)
+}
+
+extension URLSession: URLSessionProtocol {}
+
 /// Live Yelp Fusion API client.
 ///
 /// Complies with Council mandates:
@@ -8,12 +16,12 @@ import Foundation
 /// - Never logs API keys or raw bearer headers.
 final class YelpFusionService: MerchantDataProviding, @unchecked Sendable {
     private let apiKey: String?
-    private let session: URLSession
+    private let session: URLSessionProtocol
     private let fallbackMerchants: [Merchant]
 
     init(
         apiKey: String? = AppEnvironment.shared.yelpAPIKey,
-        session: URLSession = .shared,
+        session: URLSessionProtocol = URLSession.shared,
         fallbackMerchants: [Merchant] = SampleDataRepository.sampleMerchants
     ) {
         self.apiKey = apiKey
@@ -26,10 +34,10 @@ final class YelpFusionService: MerchantDataProviding, @unchecked Sendable {
         return !apiKey.isEmpty && apiKey != "YOUR_YELP_API_KEY_HERE"
     }
 
-    func fetchNearbyMerchants(coordinate: LocationCoordinate) async throws -> [Merchant] {
+    func fetchNearbyMerchants(coordinate: LocationCoordinate) async throws -> NearbyMerchants {
         guard isConfigured, let apiKey else {
             // Unconfigured or demo mode: return local sample merchants
-            return fallbackMerchants
+            return NearbyMerchants(merchants: fallbackMerchants, source: .sample)
         }
 
         var components = URLComponents(string: "https://api.yelp.com/v3/businesses/search")
@@ -42,7 +50,7 @@ final class YelpFusionService: MerchantDataProviding, @unchecked Sendable {
         ]
 
         guard let url = components?.url else {
-            return fallbackMerchants
+            return NearbyMerchants(merchants: fallbackMerchants, source: .sample)
         }
 
         var request = URLRequest(url: url, timeoutInterval: 5.0)
@@ -53,15 +61,20 @@ final class YelpFusionService: MerchantDataProviding, @unchecked Sendable {
         do {
             let (data, response) = try await session.data(for: request)
             guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-                return fallbackMerchants
+                // A rejected key (401/403) or an expired trial (400) lands here.
+                // Falling back is right — the app must stay usable — but the
+                // caller is told the data is sampled rather than live.
+                return NearbyMerchants(merchants: fallbackMerchants, source: .sample)
             }
 
             let decoded = try JSONDecoder().decode(YelpSearchResponse.self, from: data)
             let merchants = decoded.businesses.map { $0.toDomainMerchant() }
-            return merchants.isEmpty ? fallbackMerchants : merchants
+            return merchants.isEmpty
+                ? NearbyMerchants(merchants: fallbackMerchants, source: .sample)
+                : NearbyMerchants(merchants: merchants, source: .live)
         } catch {
             // On network failure / timeout, return fallback merchants seamlessly
-            return fallbackMerchants
+            return NearbyMerchants(merchants: fallbackMerchants, source: .sample)
         }
     }
 

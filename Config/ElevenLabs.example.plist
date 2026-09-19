@@ -4,6 +4,7 @@
 <dict>
 	<!--
 	  Safe example configuration. Contains placeholders only.
+	  Copy to PointPilot/Config/ElevenLabs.plist
 
 	  To enable the real ElevenLabs voice agent:
 
@@ -12,9 +13,11 @@
 
 	  2. Replace YOUR_AGENT_ID_HERE with your public ElevenLabs agent ID.
 
-	  3. Add the ElevenLabs Swift SDK package in Xcode:
-	     File ▸ Add Package Dependencies…
-	     https://github.com/elevenlabs/elevenlabs-swift-sdk.git  (2.0.0+)
+	  3. Run `xcodegen generate`, then build. The ElevenLabs Swift SDK is
+	     already declared in project.yml — no manual package step is needed.
+
+	  Only a PUBLIC agent ID belongs here. Never put an API key in the app: it
+	  is a server-side secret and can be extracted from any binary.
 
 	  With no plist present, the app runs the full flow through the local mock
 	  voice service and typed input. Nothing breaks and nothing is disabled.

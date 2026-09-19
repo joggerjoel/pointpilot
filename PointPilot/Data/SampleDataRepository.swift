@@ -12,13 +12,16 @@ struct SampleDataRepository: MerchantProviding {
     let merchants: [Merchant]
     let offers: [CardOffer]
     let diningProgram: DiningProgram
+    /// Past recommendations shown on the metrics dashboard. Demo aggregates.
+    let history: [HistoryEntry]
 
     init() {
         self.init(
             cards: Self.sampleCards,
             merchants: Self.sampleMerchants,
             offers: Self.sampleOffers,
-            diningProgram: Self.sampleDiningProgram
+            diningProgram: Self.sampleDiningProgram,
+            history: Self.sampleHistory
         )
     }
 
@@ -26,13 +29,18 @@ struct SampleDataRepository: MerchantProviding {
         cards: [CreditCard],
         merchants: [Merchant],
         offers: [CardOffer],
-        diningProgram: DiningProgram
+        diningProgram: DiningProgram,
+        history: [HistoryEntry] = []
     ) {
         self.cards = cards
         self.merchants = merchants
         self.offers = offers
         self.diningProgram = diningProgram
+        self.history = history
     }
+
+    /// Aggregated figures for the metrics dashboard.
+    var metrics: MetricsSummary { MetricsSummary(entries: history) }
 
     func card(id: String) -> CreditCard? {
         cards.first { $0.id == id }
@@ -54,9 +62,12 @@ struct SampleDataRepository: MerchantProviding {
             cards: cards,
             merchants: Array(existingMap.values),
             offers: offers,
-            diningProgram: diningProgram
+            diningProgram: diningProgram,
+            history: history
         )
     }
+
+
 
     // MARK: - Cards
 
@@ -109,6 +120,10 @@ struct SampleDataRepository: MerchantProviding {
     static let shakeShackID = "shake-shack"
     static let chipotleID = "chipotle"
     static let starbucksID = "starbucks"
+    static let wholeFoodsID = "whole-foods"
+    static let shellID = "shell"
+    static let appleStoreID = "apple-store"
+    static let amcID = "amc-theatres"
     static let genericRestaurantID = "generic-restaurant"
 
     static let sampleMerchants: [Merchant] = [
@@ -135,6 +150,33 @@ struct SampleDataRepository: MerchantProviding {
             name: "Starbucks",
             category: .dining,
             aliases: ["starbucks coffee"]
+        ),
+        // Non-dining sample merchants. These exist so the dashboard can show a
+        // realistic spread of categories without pretending a restaurant is a
+        // grocery store.
+        Merchant(
+            id: wholeFoodsID,
+            name: "Whole Foods",
+            category: .groceries,
+            aliases: ["whole foods market"]
+        ),
+        Merchant(
+            id: shellID,
+            name: "Shell",
+            category: .gas,
+            aliases: ["shell gas", "shell station"]
+        ),
+        Merchant(
+            id: appleStoreID,
+            name: "Apple Store",
+            category: .clothing,
+            aliases: ["apple", "apple store retail"]
+        ),
+        Merchant(
+            id: amcID,
+            name: "AMC Theatres",
+            category: .entertainment,
+            aliases: ["amc", "amc theaters"]
         ),
         Merchant(
             id: genericRestaurantID,
@@ -189,4 +231,79 @@ struct SampleDataRepository: MerchantProviding {
         mileValue: Decimal(string: "0.015") ?? 0,
         eligibleMerchantIDs: [nobuID, shakeShackID, chipotleID]
     )
+
+    // MARK: - History (demo aggregates)
+
+    /// A past purchase to replay through the engine.
+    private struct HistorySpec {
+        let id: String
+        let merchantQuery: String
+        let amount: Decimal
+        /// The card the user reached for. May be worse than the winner, which
+        /// is what makes the "money left on the table" figure non-zero.
+        let usedCardID: String
+        let daysAgo: Int
+    }
+
+    /// The purchases the dashboard replays.
+    ///
+    /// Several deliberately use a card that is *not* the winner, so the missed
+    /// value figure reflects a real alternative rather than a hypothetical one.
+    private static let sampleHistorySpecs: [HistorySpec] = [
+        HistorySpec(id: "h-01", merchantQuery: "Nobu", amount: 200, usedCardID: amexGoldID, daysAgo: 2),
+        HistorySpec(id: "h-02", merchantQuery: "Whole Foods", amount: 140, usedCardID: sapphirePreferredID, daysAgo: 4),
+        HistorySpec(id: "h-03", merchantQuery: "Shake Shack", amount: 28, usedCardID: sapphirePreferredID, daysAgo: 6),
+        HistorySpec(id: "h-04", merchantQuery: "Shell", amount: 62, usedCardID: ventureID, daysAgo: 9),
+        HistorySpec(id: "h-05", merchantQuery: "Chipotle", amount: 19, usedCardID: ventureID, daysAgo: 12),
+        HistorySpec(id: "h-06", merchantQuery: "Apple Store", amount: 320, usedCardID: amexGoldID, daysAgo: 15),
+        HistorySpec(id: "h-07", merchantQuery: "AMC Theatres", amount: 46, usedCardID: sapphirePreferredID, daysAgo: 21),
+        HistorySpec(id: "h-08", merchantQuery: "Starbucks", amount: 12, usedCardID: amexGoldID, daysAgo: 26)
+    ]
+
+    /// A merchant provider built from the static sample data.
+    ///
+    /// Exists so the history can be computed without constructing a
+    /// `SampleDataRepository`, which would recurse through this very property.
+    private struct StaticMerchantProvider: MerchantProviding {
+        let merchants: [Merchant]
+        let offers: [CardOffer]
+        let diningProgram: DiningProgram
+    }
+
+    /// Demo history, computed by the real engine.
+    ///
+    /// Deriving these figures rather than hard-coding them is what keeps the
+    /// dashboard honest: the earned and best-possible values are exactly what
+    /// `RecommendationEngine` produces, so the totals on the metrics screen can
+    /// never drift from the numbers the app shows when you ask for a card.
+    static let sampleHistory: [HistoryEntry] = {
+        let provider = StaticMerchantProvider(
+            merchants: sampleMerchants,
+            offers: sampleOffers,
+            diningProgram: sampleDiningProgram
+        )
+        let engine = RecommendationEngine(cards: sampleCards, merchantProvider: provider)
+
+        return sampleHistorySpecs.compactMap { spec in
+            guard let result = try? engine.recommend(
+                merchantQuery: spec.merchantQuery,
+                amount: spec.amount
+            ) else { return nil }
+            guard let used = result.ranked.first(where: { $0.card.id == spec.usedCardID }) else {
+                return nil
+            }
+
+            return HistoryEntry(
+                id: spec.id,
+                merchantName: result.merchantName,
+                category: result.category,
+                amount: spec.amount,
+                usedCardID: used.card.id,
+                usedCardName: used.card.name,
+                earned: used.totalValue,
+                bestPossible: result.winner.totalValue,
+                daysAgo: spec.daysAgo
+            )
+        }
+    }()
 }

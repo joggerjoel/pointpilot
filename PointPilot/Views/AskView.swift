@@ -1,55 +1,57 @@
 import SwiftUI
 
-/// The app's primary screen: one question, one action.
+/// The card finder: one question, one action.
+///
+/// Pushed onto the stack owned by `RootView`; it deliberately does not create
+/// its own `NavigationStack`.
 struct AskView: View {
     @State var viewModel: AskViewModel
     @FocusState private var focusedField: Field?
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    /// Text typed into the voice agent, so voice is usable without a microphone
+    /// — the same affordance the web app offers.
+    @State private var voiceText = ""
 
     private enum Field { case merchant, amount }
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: Theme.Spacing.section) {
-                    header
-                    voiceSection
-                    fallbackSection
-                    walletPreview
+        // No NavigationStack here: this screen is pushed onto the stack that
+        // RootView owns. Nesting a second stack would break the back button.
+        ScrollView {
+            VStack(alignment: .leading, spacing: Theme.Spacing.section) {
+                header
+                voiceSection
+                fallbackSection
+                walletPreview
+            }
+            .padding(.horizontal, Theme.Spacing.section)
+            .padding(.bottom, Theme.Spacing.loose)
+        }
+        .scrollDismissesKeyboard(.interactively)
+        .background(Color(.systemGroupedBackground))
+        .navigationTitle("PointPilot")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    viewModel.showWallet()
+                } label: {
+                    Label("Wallet", systemImage: "wallet.pass")
                 }
-                .padding(.horizontal, Theme.Spacing.section)
-                .padding(.bottom, Theme.Spacing.loose)
             }
-            .scrollDismissesKeyboard(.interactively)
-            .background(Color(.systemGroupedBackground))
-            .navigationTitle("PointPilot")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        viewModel.showWallet()
-                    } label: {
-                        Label("Wallet", systemImage: "wallet.pass")
-                    }
-                }
-            }
-            .sheet(isPresented: Binding(
-                get: { viewModel.isShowingWallet },
-                set: { if !$0 { viewModel.hideWallet() } }
-            )) {
-                WalletView(repository: viewModel.repository)
-            }
-            .sheet(item: Binding(
-                get: { viewModel.recommendation },
-                set: { if $0 == nil { viewModel.askAnother() } }
-            )) { recommendation in
-                RecommendationView(
-                    recommendation: recommendation,
-                    activatedOfferID: viewModel.activatedOfferID,
-                    onActivate: { viewModel.activateOffer(offerID: $0) },
-                    onAskAnother: { viewModel.askAnother() }
-                )
-            }
+        }
+        // The wallet sheet lives on RootView: two observers of the same flag
+        // would race to present it.
+        .sheet(item: Binding(
+            get: { viewModel.recommendation },
+            set: { if $0 == nil { viewModel.askAnother() } }
+        )) { recommendation in
+            RecommendationView(
+                recommendation: recommendation,
+                activatedOfferID: viewModel.activatedOfferID,
+                onActivate: { viewModel.activateOffer(offerID: $0) },
+                onAskAnother: { viewModel.askAnother() }
+            )
         }
         // Location is requested only when the user taps "Nearby" — never on
         // launch, so the system permission dialog never greets the user before
@@ -99,7 +101,45 @@ struct AskView: View {
             if !viewModel.messages.isEmpty {
                 transcript
             }
+
+            if viewModel.isVoiceBusy {
+                voiceTextInput
+            }
         }
+    }
+
+    /// Typed input for the running agent.
+    ///
+    /// The agent's parser is the same either way, so typing exercises the real
+    /// tool-calling path. This is what makes the conversational flow usable when
+    /// speech recognition is unavailable.
+    private var voiceTextInput: some View {
+        HStack(spacing: Theme.Spacing.tight) {
+            TextField("Type what you'd say…", text: $voiceText)
+                .submitLabel(.send)
+                .onSubmit(sendVoiceText)
+                .padding(Theme.Spacing.standard)
+                .background(
+                    RoundedRectangle(cornerRadius: Theme.Radius.control, style: .continuous)
+                        .fill(Color(.secondarySystemGroupedBackground))
+                )
+                .accessibilityIdentifier("voiceTextField")
+                .accessibilityLabel("Type a message for the voice agent")
+
+            Button(action: sendVoiceText) {
+                Image(systemName: "arrow.up.circle.fill")
+                    .font(.title2)
+                    .frame(minWidth: Theme.minimumTouchTarget, minHeight: Theme.minimumTouchTarget)
+            }
+            .disabled(voiceText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            .accessibilityIdentifier("voiceSendButton")
+            .accessibilityLabel("Send to the voice agent")
+        }
+    }
+
+    private func sendVoiceText() {
+        viewModel.sendVoiceText(voiceText)
+        voiceText = ""
     }
 
     private var voiceButton: some View {
@@ -210,6 +250,28 @@ struct AskView: View {
 
             if !viewModel.nearbyMerchants.isEmpty {
                 nearbyChips
+
+                // Live venues and bundled samples look identical once they are
+                // chips, so the sample case has to say so — otherwise an
+                // expired key or an outage reads as working GPS results. Shown
+                // only after a real attempt, so launch is not noisy.
+                if viewModel.showsSampleSourceNotice {
+                    Text("Showing sample venues — live Yelp results unavailable.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .accessibilityIdentifier("nearbySourceNotice")
+                }
+            }
+
+            // A failed location attempt must explain itself rather than look
+            // like a dead button.
+            if let locationNotice = viewModel.locationNotice {
+                NoticeBanner(
+                    text: locationNotice,
+                    systemImage: "location.slash",
+                    tone: .informational
+                )
+                .accessibilityIdentifier("locationNotice")
             }
 
             TextField("Restaurant, e.g. Nobu", text: $viewModel.merchantQuery)

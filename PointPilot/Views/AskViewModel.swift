@@ -29,6 +29,23 @@ final class AskViewModel {
     private(set) var locationState: LocationState = .notDetermined
     private(set) var nearbyMerchants: [Merchant] = []
     private(set) var isLocating: Bool = false
+    /// Where the current chips came from. Drives the disclosure that keeps
+    /// sample venues from being mistaken for live nearby results.
+    private(set) var nearbySource: MerchantSource = .sample
+    /// Whether the user has actually asked for nearby venues in this session.
+    /// Until they do, the chips are the bundled defaults and there is nothing
+    /// to disclose — a notice on launch would be noise, and saying live data is
+    /// unavailable before trying would be untrue.
+    private(set) var didAttemptNearbyFetch = false
+
+    /// Whether to disclose that the chips are sample data.
+    ///
+    /// Only once the user has asked for nearby venues and live results did not
+    /// arrive — which is what an expired key, a revoked key, or an outage all
+    /// look like from here.
+    var showsSampleSourceNotice: Bool {
+        didAttemptNearbyFetch && nearbySource == .sample
+    }
 
     var repository: SampleDataRepository
     private var engine: RecommendationProviding
@@ -68,6 +85,27 @@ final class AskViewModel {
     var canUseVoice: Bool { voiceService.isConfigured }
 
     var isVoiceBusy: Bool { voiceState.isBusy }
+
+    /// A non-blocking explanation when location is unavailable.
+    ///
+    /// A denied or restricted permission must never be silently swallowed: the
+    /// user asked for nearby venues and got nothing, so the screen has to say
+    /// why and point at the path that still works.
+    var locationNotice: String? {
+        switch locationState {
+        case .denied:
+            return "Location is off, so nearby restaurants can't update. "
+                + "Allow it in Settings, or type a merchant below — everything else works."
+        case .restricted:
+            return "Location is restricted on this device. "
+                + "Type a merchant below instead — everything else works."
+        case .error(let message):
+            return "Couldn't get your location (\(message)). "
+                + "Showing the sample venues instead."
+        case .notDetermined, .requesting, .authorized:
+            return nil
+        }
+    }
 
     // MARK: - Typed flow
 
@@ -225,18 +263,21 @@ final class AskViewModel {
     }
 
     private func fetchNearby(for coordinate: LocationCoordinate) async {
+        didAttemptNearbyFetch = true
         guard let merchantDataService else { return }
         do {
-            let fetched = try await merchantDataService.fetchNearbyMerchants(coordinate: coordinate)
-            if !fetched.isEmpty {
-                self.nearbyMerchants = fetched
+            let result = try await merchantDataService.fetchNearbyMerchants(coordinate: coordinate)
+            if !result.merchants.isEmpty {
+                self.nearbyMerchants = result.merchants
+                self.nearbySource = result.source
                 // Enrich repository and engine dynamically so new merchants can be evaluated
-                self.repository = self.repository.withAdditionalMerchants(fetched)
+                self.repository = self.repository.withAdditionalMerchants(result.merchants)
                 self.engine = RecommendationEngine(cards: self.repository.cards, merchantProvider: self.repository)
             }
         } catch {
             // Keep local sample merchants on failure
             self.nearbyMerchants = repository.merchants.filter { !$0.isFallback }
+            self.nearbySource = .sample
         }
     }
 

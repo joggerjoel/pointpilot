@@ -10,29 +10,37 @@
 		02369ACEA0333789D2F239AF /* PointPilotApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CAD63E0D9F8C372C481E79 /* PointPilotApp.swift */; };
 		09C3A5E72015F06BC27C9713 /* CreditCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 501007760C84548E53B5C545 /* CreditCard.swift */; };
 		0CD6B7499EB7770A70760CE8 /* RecommendationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C1FA9BC62ED2EDC9661E93 /* RecommendationEngine.swift */; };
+		11D241C9AC9680EF693431D4 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CBCDC6A1D8120AE2E30D546 /* RootView.swift */; };
 		2C75C754D6BB29DA38342F62 /* DemoFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5AE35899F0B676E63239BA /* DemoFlowUITests.swift */; };
 		2D6004427EC06D9B41213671 /* Merchant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CACF9ED72C4D6732CAADEB /* Merchant.swift */; };
 		2F35AA77B545D70447B68963 /* VoiceTranscriptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB343D3962A0FB72AA11B537 /* VoiceTranscriptTests.swift */; };
 		33BE64C8202203076FACD014 /* RecommendationEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEFE8DC75FB770D830EF5B4 /* RecommendationEngineTests.swift */; };
 		4E3A2A088C8C0182CF253D41 /* AppEnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B245FDC0F3EF185B433750A7 /* AppEnvironmentTests.swift */; };
 		529AC095BADDB961B0B8732D /* ElevenLabsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03CFCF767B6CC489798E9AA /* ElevenLabsConfiguration.swift */; };
+		58F77699580DA76D81DEF1E4 /* MetricsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1146DD23A617C6ABD0BEA47 /* MetricsView.swift */; };
 		5EF5A8232C22D56672E0E1D4 /* AskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F1742C1F280E615FCE072A /* AskViewModel.swift */; };
 		635D39ED440CB4A64A7CC3D5 /* MerchantDataProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33BA904ACE4392710A70C7F /* MerchantDataProviding.swift */; };
 		68E7DD18C1005656C5EF2AE0 /* LocationAndDiscoveryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D53CB57FAD3FAE455A4567 /* LocationAndDiscoveryTests.swift */; };
+		7433A1F9A6F70053C56C5A8C /* HomeAndMetricsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9539DEFEDC3C8491E50BE3D /* HomeAndMetricsUITests.swift */; };
+		793937F08AF418DF4DA71BE6 /* Illustration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15201592002A7637595FCD9 /* Illustration.swift */; };
+		816AAB7BD1A496911EA53B36 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA789A582B60FB812F34F29E /* HomeView.swift */; };
 		8385E958547081BA3751B15D /* RecommendationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5FA6E59F373BF5F253ABFE /* RecommendationView.swift */; };
 		8A143498CE59F1A9F969352D /* YelpFusionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DEBCEDF854AC8CC3C59BA92 /* YelpFusionService.swift */; };
+		8F900160F049762F6E1DA039 /* Delight.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74C85F971F67BDF42858CF6 /* Delight.swift */; };
 		953A47D66D58B3C18A15E910 /* ElevenLabsVoiceAgentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB55E81231BF6B9CADBE844 /* ElevenLabsVoiceAgentService.swift */; };
 		98A2E8C601AEF4A410F4E614 /* VoiceAgentProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B1F1FEFF75FB8CA94A315E /* VoiceAgentProviding.swift */; };
 		99563F3850BD76B92605AFBA /* Rewards.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3235982BDCEAE5F20960528 /* Rewards.swift */; };
 		A6D295F9A31625BE8245B454 /* WalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDD4928861A40BBE2941BEF /* WalletView.swift */; };
 		A91CD46477C6C96F66E5E428 /* YelpModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4004899B8B65F130927C8A83 /* YelpModels.swift */; };
 		BA30B4D88056557422097EB3 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797BE28B54E905FA5D8DB2A0 /* LocationService.swift */; };
+		BAA5C0AEDD86AC2D7C1A3A25 /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE3222A28A5B05C8D34B8181 /* Metrics.swift */; };
 		BAC68CCB99AC7423B5BE31B4 /* MockVoiceAgentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F28FAD1FFE97CF9DEE396D3F /* MockVoiceAgentService.swift */; };
 		BEF82A79667077EDD212694F /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AD650CB7E6900834B886BE /* AppEnvironment.swift */; };
 		C906B1B07FE223D909AA9365 /* YelpFusionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A7F93B7338236C4272D32C /* YelpFusionServiceTests.swift */; };
 		DAA982CF84E29BE7A0C1E72E /* SampleDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FB6287D654E8ED7D76C633 /* SampleDataRepository.swift */; };
 		DC524D37E10C5BC6678C727B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9480A30886F89A83BD2F1597 /* Theme.swift */; };
 		F7CB3344DA988A7436115EF6 /* AskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDBB5559114DD8D01B9F2E1 /* AskView.swift */; };
+		FADDAFD980ECA4DC40FF7587 /* ElevenLabs in Frameworks */ = {isa = PBXBuildFile; productRef = 084F23767ABEC765B7A30D56 /* ElevenLabs */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +63,7 @@
 /* Begin PBXFileReference section */
 		1DEBCEDF854AC8CC3C59BA92 /* YelpFusionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YelpFusionService.swift; sourceTree = "<group>"; };
 		27A7F93B7338236C4272D32C /* YelpFusionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YelpFusionServiceTests.swift; sourceTree = "<group>"; };
+		2CBCDC6A1D8120AE2E30D546 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		33CACF9ED72C4D6732CAADEB /* Merchant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Merchant.swift; sourceTree = "<group>"; };
 		35AD650CB7E6900834B886BE /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		39CAD63E0D9F8C372C481E79 /* PointPilotApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointPilotApp.swift; sourceTree = "<group>"; };
@@ -67,22 +76,39 @@
 		8BEFE8DC75FB770D830EF5B4 /* RecommendationEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationEngineTests.swift; sourceTree = "<group>"; };
 		8CB55E81231BF6B9CADBE844 /* ElevenLabsVoiceAgentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevenLabsVoiceAgentService.swift; sourceTree = "<group>"; };
 		9480A30886F89A83BD2F1597 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		A1146DD23A617C6ABD0BEA47 /* MetricsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsView.swift; sourceTree = "<group>"; };
+		A15201592002A7637595FCD9 /* Illustration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Illustration.swift; sourceTree = "<group>"; };
 		B245FDC0F3EF185B433750A7 /* AppEnvironmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironmentTests.swift; sourceTree = "<group>"; };
 		B33BA904ACE4392710A70C7F /* MerchantDataProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantDataProviding.swift; sourceTree = "<group>"; };
 		B6FB6287D654E8ED7D76C633 /* SampleDataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleDataRepository.swift; sourceTree = "<group>"; };
 		BB5FA6E59F373BF5F253ABFE /* RecommendationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationView.swift; sourceTree = "<group>"; };
 		C3235982BDCEAE5F20960528 /* Rewards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rewards.swift; sourceTree = "<group>"; };
 		C8B1F1FEFF75FB8CA94A315E /* VoiceAgentProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceAgentProviding.swift; sourceTree = "<group>"; };
+		C9539DEFEDC3C8491E50BE3D /* HomeAndMetricsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAndMetricsUITests.swift; sourceTree = "<group>"; };
+		CA789A582B60FB812F34F29E /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		CEDBB5559114DD8D01B9F2E1 /* AskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskView.swift; sourceTree = "<group>"; };
 		D03CFCF767B6CC489798E9AA /* ElevenLabsConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevenLabsConfiguration.swift; sourceTree = "<group>"; };
 		DB343D3962A0FB72AA11B537 /* VoiceTranscriptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceTranscriptTests.swift; sourceTree = "<group>"; };
 		DBDD4928861A40BBE2941BEF /* WalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletView.swift; sourceTree = "<group>"; };
+		E74C85F971F67BDF42858CF6 /* Delight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delight.swift; sourceTree = "<group>"; };
 		E7D53CB57FAD3FAE455A4567 /* LocationAndDiscoveryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAndDiscoveryTests.swift; sourceTree = "<group>"; };
 		EB93E2ABFD93B7CC9E29631F /* PointPilotUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PointPilotUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EE3222A28A5B05C8D34B8181 /* Metrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metrics.swift; sourceTree = "<group>"; };
 		EE5AE35899F0B676E63239BA /* DemoFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoFlowUITests.swift; sourceTree = "<group>"; };
 		EF053D6B3F89FDA866A00F80 /* PointPilotTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PointPilotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F28FAD1FFE97CF9DEE396D3F /* MockVoiceAgentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockVoiceAgentService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DCAFBB5C9610C3366AB9D76E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FADDAFD980ECA4DC40FF7587 /* ElevenLabs in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		05E3591AF69EF1BB50D07BE9 /* Location */ = {
@@ -116,6 +142,7 @@
 			children = (
 				501007760C84548E53B5C545 /* CreditCard.swift */,
 				33CACF9ED72C4D6732CAADEB /* Merchant.swift */,
+				EE3222A28A5B05C8D34B8181 /* Metrics.swift */,
 				C3235982BDCEAE5F20960528 /* Rewards.swift */,
 			);
 			path = Models;
@@ -155,7 +182,12 @@
 			children = (
 				CEDBB5559114DD8D01B9F2E1 /* AskView.swift */,
 				63F1742C1F280E615FCE072A /* AskViewModel.swift */,
+				E74C85F971F67BDF42858CF6 /* Delight.swift */,
+				CA789A582B60FB812F34F29E /* HomeView.swift */,
+				A15201592002A7637595FCD9 /* Illustration.swift */,
+				A1146DD23A617C6ABD0BEA47 /* MetricsView.swift */,
 				BB5FA6E59F373BF5F253ABFE /* RecommendationView.swift */,
+				2CBCDC6A1D8120AE2E30D546 /* RootView.swift */,
 				9480A30886F89A83BD2F1597 /* Theme.swift */,
 				DBDD4928861A40BBE2941BEF /* WalletView.swift */,
 			);
@@ -190,6 +222,7 @@
 			isa = PBXGroup;
 			children = (
 				EE5AE35899F0B676E63239BA /* DemoFlowUITests.swift */,
+				C9539DEFEDC3C8491E50BE3D /* HomeAndMetricsUITests.swift */,
 			);
 			path = PointPilotUITests;
 			sourceTree = "<group>";
@@ -267,7 +300,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E1A500AB5EEAB5891689BD4A /* Build configuration list for PBXNativeTarget "PointPilot" */;
 			buildPhases = (
+				869F91DBB3F1663C13CEDBD2 /* Bundle .env */,
 				A00A10573B33DBE85F7EE941 /* Sources */,
+				DCAFBB5C9610C3366AB9D76E /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -275,6 +310,7 @@
 			);
 			name = PointPilot;
 			packageProductDependencies = (
+				084F23767ABEC765B7A30D56 /* ElevenLabs */,
 			);
 			productName = PointPilot;
 			productReference = 51CCCFDD91EDEA0C00B830BD /* PointPilot.app */;
@@ -313,6 +349,9 @@
 			);
 			mainGroup = F7F5E8836DE30786990E8B84;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				C1C1D68C31E5A696057EBFE8 /* XCRemoteSwiftPackageReference "elevenlabs-swift-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A253834F456C128D0FA60927 /* Products */;
 			projectDirPath = "";
@@ -325,12 +364,35 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		869F91DBB3F1663C13CEDBD2 /* Bundle .env */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle .env";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nSRC=\"${SRCROOT}/.env\"\nRES=\"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nOUT=\"$RES/PointPilot.env\"\nmkdir -p \"$RES\"\nif [ -f \"$SRC\" ]; then\n  # Copy only the keys the app reads. Everything else in .env —\n  # notably an ElevenLabs API key, which is a server-side secret — \n  # must never be written into a shipped binary, where it could be\n  # extracted. Grep (not source/eval) keeps values out of the log.\n  if grep -E '^(YELP_API_KEY|YELP_TOKEN|ELEVENLABS_AGENT_ID)=' \"$SRC\" > \"$OUT\"; then\n    :\n  else\n    rm -f \"$OUT\"\n  fi\nelse\n  rm -f \"$OUT\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		936CBAB1926F08DF18035A33 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				2C75C754D6BB29DA38342F62 /* DemoFlowUITests.swift in Sources */,
+				7433A1F9A6F70053C56C5A8C /* HomeAndMetricsUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,16 +404,22 @@
 				F7CB3344DA988A7436115EF6 /* AskView.swift in Sources */,
 				5EF5A8232C22D56672E0E1D4 /* AskViewModel.swift in Sources */,
 				09C3A5E72015F06BC27C9713 /* CreditCard.swift in Sources */,
+				8F900160F049762F6E1DA039 /* Delight.swift in Sources */,
 				529AC095BADDB961B0B8732D /* ElevenLabsConfiguration.swift in Sources */,
 				953A47D66D58B3C18A15E910 /* ElevenLabsVoiceAgentService.swift in Sources */,
+				816AAB7BD1A496911EA53B36 /* HomeView.swift in Sources */,
+				793937F08AF418DF4DA71BE6 /* Illustration.swift in Sources */,
 				BA30B4D88056557422097EB3 /* LocationService.swift in Sources */,
 				2D6004427EC06D9B41213671 /* Merchant.swift in Sources */,
 				635D39ED440CB4A64A7CC3D5 /* MerchantDataProviding.swift in Sources */,
+				BAA5C0AEDD86AC2D7C1A3A25 /* Metrics.swift in Sources */,
+				58F77699580DA76D81DEF1E4 /* MetricsView.swift in Sources */,
 				BAC68CCB99AC7423B5BE31B4 /* MockVoiceAgentService.swift in Sources */,
 				02369ACEA0333789D2F239AF /* PointPilotApp.swift in Sources */,
 				0CD6B7499EB7770A70760CE8 /* RecommendationEngine.swift in Sources */,
 				8385E958547081BA3751B15D /* RecommendationView.swift in Sources */,
 				99563F3850BD76B92605AFBA /* Rewards.swift in Sources */,
+				11D241C9AC9680EF693431D4 /* RootView.swift in Sources */,
 				DAA982CF84E29BE7A0C1E72E /* SampleDataRepository.swift in Sources */,
 				DC524D37E10C5BC6678C727B /* Theme.swift in Sources */,
 				98A2E8C601AEF4A410F4E614 /* VoiceAgentProviding.swift in Sources */,
@@ -498,6 +566,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = PointPilot;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "PointPilot uses your location to discover nearby restaurants and calculate your best credit card rewards.";
@@ -544,6 +613,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = PointPilot;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "PointPilot uses your location to discover nearby restaurants and calculate your best credit card rewards.";
@@ -684,6 +754,25 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C1C1D68C31E5A696057EBFE8 /* XCRemoteSwiftPackageReference "elevenlabs-swift-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/elevenlabs/elevenlabs-swift-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.3.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		084F23767ABEC765B7A30D56 /* ElevenLabs */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C1C1D68C31E5A696057EBFE8 /* XCRemoteSwiftPackageReference "elevenlabs-swift-sdk" */;
+			productName = ElevenLabs;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 112AB46349A02F0CD941740B /* Project object */;
 }
