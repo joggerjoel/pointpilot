@@ -1,0 +1,33 @@
+# Environment files & secrets — never commit these!
+.env
+*.env
+PointPilot.env
+PointPilot/Config/*.env
+Config/*.env
+PointPilot/Config/ElevenLabs.plist
+Config/ElevenLabs.plist
+
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.xcscmblueprint
+*.xccheckout
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# macOS
+.DS_Store
+
+# Swift Package Manager
+.swiftpm/
+.build/
+Packages/
+Package.resolved
+
+# The generated project is reproducible from project.yml via `xcodegen generate`,
+# but it is committed so the project opens without extra tooling.

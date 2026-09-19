@@ -1,0 +1,689 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		02369ACEA0333789D2F239AF /* PointPilotApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CAD63E0D9F8C372C481E79 /* PointPilotApp.swift */; };
+		09C3A5E72015F06BC27C9713 /* CreditCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 501007760C84548E53B5C545 /* CreditCard.swift */; };
+		0CD6B7499EB7770A70760CE8 /* RecommendationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C1FA9BC62ED2EDC9661E93 /* RecommendationEngine.swift */; };
+		2C75C754D6BB29DA38342F62 /* DemoFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5AE35899F0B676E63239BA /* DemoFlowUITests.swift */; };
+		2D6004427EC06D9B41213671 /* Merchant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CACF9ED72C4D6732CAADEB /* Merchant.swift */; };
+		2F35AA77B545D70447B68963 /* VoiceTranscriptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB343D3962A0FB72AA11B537 /* VoiceTranscriptTests.swift */; };
+		33BE64C8202203076FACD014 /* RecommendationEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEFE8DC75FB770D830EF5B4 /* RecommendationEngineTests.swift */; };
+		4E3A2A088C8C0182CF253D41 /* AppEnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B245FDC0F3EF185B433750A7 /* AppEnvironmentTests.swift */; };
+		529AC095BADDB961B0B8732D /* ElevenLabsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03CFCF767B6CC489798E9AA /* ElevenLabsConfiguration.swift */; };
+		5EF5A8232C22D56672E0E1D4 /* AskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F1742C1F280E615FCE072A /* AskViewModel.swift */; };
+		635D39ED440CB4A64A7CC3D5 /* MerchantDataProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33BA904ACE4392710A70C7F /* MerchantDataProviding.swift */; };
+		68E7DD18C1005656C5EF2AE0 /* LocationAndDiscoveryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D53CB57FAD3FAE455A4567 /* LocationAndDiscoveryTests.swift */; };
+		8385E958547081BA3751B15D /* RecommendationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5FA6E59F373BF5F253ABFE /* RecommendationView.swift */; };
+		8A143498CE59F1A9F969352D /* YelpFusionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DEBCEDF854AC8CC3C59BA92 /* YelpFusionService.swift */; };
+		953A47D66D58B3C18A15E910 /* ElevenLabsVoiceAgentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB55E81231BF6B9CADBE844 /* ElevenLabsVoiceAgentService.swift */; };
+		98A2E8C601AEF4A410F4E614 /* VoiceAgentProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B1F1FEFF75FB8CA94A315E /* VoiceAgentProviding.swift */; };
+		99563F3850BD76B92605AFBA /* Rewards.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3235982BDCEAE5F20960528 /* Rewards.swift */; };
+		A6D295F9A31625BE8245B454 /* WalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDD4928861A40BBE2941BEF /* WalletView.swift */; };
+		A91CD46477C6C96F66E5E428 /* YelpModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4004899B8B65F130927C8A83 /* YelpModels.swift */; };
+		BA30B4D88056557422097EB3 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797BE28B54E905FA5D8DB2A0 /* LocationService.swift */; };
+		BAC68CCB99AC7423B5BE31B4 /* MockVoiceAgentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F28FAD1FFE97CF9DEE396D3F /* MockVoiceAgentService.swift */; };
+		BEF82A79667077EDD212694F /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AD650CB7E6900834B886BE /* AppEnvironment.swift */; };
+		C906B1B07FE223D909AA9365 /* YelpFusionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A7F93B7338236C4272D32C /* YelpFusionServiceTests.swift */; };
+		DAA982CF84E29BE7A0C1E72E /* SampleDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FB6287D654E8ED7D76C633 /* SampleDataRepository.swift */; };
+		DC524D37E10C5BC6678C727B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9480A30886F89A83BD2F1597 /* Theme.swift */; };
+		F7CB3344DA988A7436115EF6 /* AskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDBB5559114DD8D01B9F2E1 /* AskView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8B013105486867691B029987 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 112AB46349A02F0CD941740B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9379091939FC2417DB62CF7A;
+			remoteInfo = PointPilot;
+		};
+		DA916AE77BA320AE14818D91 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 112AB46349A02F0CD941740B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9379091939FC2417DB62CF7A;
+			remoteInfo = PointPilot;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1DEBCEDF854AC8CC3C59BA92 /* YelpFusionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YelpFusionService.swift; sourceTree = "<group>"; };
+		27A7F93B7338236C4272D32C /* YelpFusionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YelpFusionServiceTests.swift; sourceTree = "<group>"; };
+		33CACF9ED72C4D6732CAADEB /* Merchant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Merchant.swift; sourceTree = "<group>"; };
+		35AD650CB7E6900834B886BE /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
+		39CAD63E0D9F8C372C481E79 /* PointPilotApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointPilotApp.swift; sourceTree = "<group>"; };
+		4004899B8B65F130927C8A83 /* YelpModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YelpModels.swift; sourceTree = "<group>"; };
+		501007760C84548E53B5C545 /* CreditCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCard.swift; sourceTree = "<group>"; };
+		51CCCFDD91EDEA0C00B830BD /* PointPilot.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = PointPilot.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		57C1FA9BC62ED2EDC9661E93 /* RecommendationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationEngine.swift; sourceTree = "<group>"; };
+		63F1742C1F280E615FCE072A /* AskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskViewModel.swift; sourceTree = "<group>"; };
+		797BE28B54E905FA5D8DB2A0 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		8BEFE8DC75FB770D830EF5B4 /* RecommendationEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationEngineTests.swift; sourceTree = "<group>"; };
+		8CB55E81231BF6B9CADBE844 /* ElevenLabsVoiceAgentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevenLabsVoiceAgentService.swift; sourceTree = "<group>"; };
+		9480A30886F89A83BD2F1597 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		B245FDC0F3EF185B433750A7 /* AppEnvironmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironmentTests.swift; sourceTree = "<group>"; };
+		B33BA904ACE4392710A70C7F /* MerchantDataProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantDataProviding.swift; sourceTree = "<group>"; };
+		B6FB6287D654E8ED7D76C633 /* SampleDataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleDataRepository.swift; sourceTree = "<group>"; };
+		BB5FA6E59F373BF5F253ABFE /* RecommendationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationView.swift; sourceTree = "<group>"; };
+		C3235982BDCEAE5F20960528 /* Rewards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rewards.swift; sourceTree = "<group>"; };
+		C8B1F1FEFF75FB8CA94A315E /* VoiceAgentProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceAgentProviding.swift; sourceTree = "<group>"; };
+		CEDBB5559114DD8D01B9F2E1 /* AskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskView.swift; sourceTree = "<group>"; };
+		D03CFCF767B6CC489798E9AA /* ElevenLabsConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevenLabsConfiguration.swift; sourceTree = "<group>"; };
+		DB343D3962A0FB72AA11B537 /* VoiceTranscriptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceTranscriptTests.swift; sourceTree = "<group>"; };
+		DBDD4928861A40BBE2941BEF /* WalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletView.swift; sourceTree = "<group>"; };
+		E7D53CB57FAD3FAE455A4567 /* LocationAndDiscoveryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAndDiscoveryTests.swift; sourceTree = "<group>"; };
+		EB93E2ABFD93B7CC9E29631F /* PointPilotUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PointPilotUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EE5AE35899F0B676E63239BA /* DemoFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoFlowUITests.swift; sourceTree = "<group>"; };
+		EF053D6B3F89FDA866A00F80 /* PointPilotTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PointPilotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F28FAD1FFE97CF9DEE396D3F /* MockVoiceAgentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockVoiceAgentService.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		05E3591AF69EF1BB50D07BE9 /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				797BE28B54E905FA5D8DB2A0 /* LocationService.swift */,
+			);
+			path = Location;
+			sourceTree = "<group>";
+		};
+		0C227ED0B5897B77B27CE5BE /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				B6FB6287D654E8ED7D76C633 /* SampleDataRepository.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		1D36498784E0F5E6C91B88E7 /* Yelp */ = {
+			isa = PBXGroup;
+			children = (
+				B33BA904ACE4392710A70C7F /* MerchantDataProviding.swift */,
+				1DEBCEDF854AC8CC3C59BA92 /* YelpFusionService.swift */,
+				4004899B8B65F130927C8A83 /* YelpModels.swift */,
+			);
+			path = Yelp;
+			sourceTree = "<group>";
+		};
+		33B5511D314CEE63ABCDB971 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				501007760C84548E53B5C545 /* CreditCard.swift */,
+				33CACF9ED72C4D6732CAADEB /* Merchant.swift */,
+				C3235982BDCEAE5F20960528 /* Rewards.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		4083B212DA10EE73B6493357 /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				57C1FA9BC62ED2EDC9661E93 /* RecommendationEngine.swift */,
+			);
+			path = Engine;
+			sourceTree = "<group>";
+		};
+		67D44244DCBD342D52017E94 /* Voice */ = {
+			isa = PBXGroup;
+			children = (
+				D03CFCF767B6CC489798E9AA /* ElevenLabsConfiguration.swift */,
+				8CB55E81231BF6B9CADBE844 /* ElevenLabsVoiceAgentService.swift */,
+				F28FAD1FFE97CF9DEE396D3F /* MockVoiceAgentService.swift */,
+				C8B1F1FEFF75FB8CA94A315E /* VoiceAgentProviding.swift */,
+			);
+			path = Voice;
+			sourceTree = "<group>";
+		};
+		A253834F456C128D0FA60927 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				51CCCFDD91EDEA0C00B830BD /* PointPilot.app */,
+				EF053D6B3F89FDA866A00F80 /* PointPilotTests.xctest */,
+				EB93E2ABFD93B7CC9E29631F /* PointPilotUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B23D23DED7D9B158934EB080 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CEDBB5559114DD8D01B9F2E1 /* AskView.swift */,
+				63F1742C1F280E615FCE072A /* AskViewModel.swift */,
+				BB5FA6E59F373BF5F253ABFE /* RecommendationView.swift */,
+				9480A30886F89A83BD2F1597 /* Theme.swift */,
+				DBDD4928861A40BBE2941BEF /* WalletView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		CF17A554629376161047D61B /* PointPilot */ = {
+			isa = PBXGroup;
+			children = (
+				DD750FB3481FDB78A8BEE22F /* Config */,
+				0C227ED0B5897B77B27CE5BE /* Data */,
+				4083B212DA10EE73B6493357 /* Engine */,
+				33B5511D314CEE63ABCDB971 /* Models */,
+				D4F871FD9147D3272E630033 /* Services */,
+				B23D23DED7D9B158934EB080 /* Views */,
+				67D44244DCBD342D52017E94 /* Voice */,
+				39CAD63E0D9F8C372C481E79 /* PointPilotApp.swift */,
+			);
+			path = PointPilot;
+			sourceTree = "<group>";
+		};
+		D4F871FD9147D3272E630033 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				05E3591AF69EF1BB50D07BE9 /* Location */,
+				1D36498784E0F5E6C91B88E7 /* Yelp */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		D5715E30E5FE55A5942E2174 /* PointPilotUITests */ = {
+			isa = PBXGroup;
+			children = (
+				EE5AE35899F0B676E63239BA /* DemoFlowUITests.swift */,
+			);
+			path = PointPilotUITests;
+			sourceTree = "<group>";
+		};
+		DD750FB3481FDB78A8BEE22F /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				35AD650CB7E6900834B886BE /* AppEnvironment.swift */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		F7F5E8836DE30786990E8B84 = {
+			isa = PBXGroup;
+			children = (
+				CF17A554629376161047D61B /* PointPilot */,
+				FEDA22A6563E440A69BAF6D3 /* PointPilotTests */,
+				D5715E30E5FE55A5942E2174 /* PointPilotUITests */,
+				A253834F456C128D0FA60927 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FEDA22A6563E440A69BAF6D3 /* PointPilotTests */ = {
+			isa = PBXGroup;
+			children = (
+				B245FDC0F3EF185B433750A7 /* AppEnvironmentTests.swift */,
+				E7D53CB57FAD3FAE455A4567 /* LocationAndDiscoveryTests.swift */,
+				8BEFE8DC75FB770D830EF5B4 /* RecommendationEngineTests.swift */,
+				DB343D3962A0FB72AA11B537 /* VoiceTranscriptTests.swift */,
+				27A7F93B7338236C4272D32C /* YelpFusionServiceTests.swift */,
+			);
+			path = PointPilotTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		20A70B9B93BDAAC91783C914 /* PointPilotTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 892059A951D6CFC21FB9C6A4 /* Build configuration list for PBXNativeTarget "PointPilotTests" */;
+			buildPhases = (
+				D990361554B8E730240500E1 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C4360835AACDA7BE21BD53E4 /* PBXTargetDependency */,
+			);
+			name = PointPilotTests;
+			packageProductDependencies = (
+			);
+			productName = PointPilotTests;
+			productReference = EF053D6B3F89FDA866A00F80 /* PointPilotTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		4C3322D1D5AE1971F13B93B4 /* PointPilotUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3943BB31A8D894D8541D3ED1 /* Build configuration list for PBXNativeTarget "PointPilotUITests" */;
+			buildPhases = (
+				936CBAB1926F08DF18035A33 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3AA4D15D72147D4291C40940 /* PBXTargetDependency */,
+			);
+			name = PointPilotUITests;
+			packageProductDependencies = (
+			);
+			productName = PointPilotUITests;
+			productReference = EB93E2ABFD93B7CC9E29631F /* PointPilotUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		9379091939FC2417DB62CF7A /* PointPilot */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E1A500AB5EEAB5891689BD4A /* Build configuration list for PBXNativeTarget "PointPilot" */;
+			buildPhases = (
+				A00A10573B33DBE85F7EE941 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PointPilot;
+			packageProductDependencies = (
+			);
+			productName = PointPilot;
+			productReference = 51CCCFDD91EDEA0C00B830BD /* PointPilot.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		112AB46349A02F0CD941740B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					20A70B9B93BDAAC91783C914 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					4C3322D1D5AE1971F13B93B4 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+						TestTargetID = 9379091939FC2417DB62CF7A;
+					};
+					9379091939FC2417DB62CF7A = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = BEE5421B23018276AA731F16 /* Build configuration list for PBXProject "PointPilot" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = F7F5E8836DE30786990E8B84;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = A253834F456C128D0FA60927 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9379091939FC2417DB62CF7A /* PointPilot */,
+				20A70B9B93BDAAC91783C914 /* PointPilotTests */,
+				4C3322D1D5AE1971F13B93B4 /* PointPilotUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		936CBAB1926F08DF18035A33 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C75C754D6BB29DA38342F62 /* DemoFlowUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A00A10573B33DBE85F7EE941 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BEF82A79667077EDD212694F /* AppEnvironment.swift in Sources */,
+				F7CB3344DA988A7436115EF6 /* AskView.swift in Sources */,
+				5EF5A8232C22D56672E0E1D4 /* AskViewModel.swift in Sources */,
+				09C3A5E72015F06BC27C9713 /* CreditCard.swift in Sources */,
+				529AC095BADDB961B0B8732D /* ElevenLabsConfiguration.swift in Sources */,
+				953A47D66D58B3C18A15E910 /* ElevenLabsVoiceAgentService.swift in Sources */,
+				BA30B4D88056557422097EB3 /* LocationService.swift in Sources */,
+				2D6004427EC06D9B41213671 /* Merchant.swift in Sources */,
+				635D39ED440CB4A64A7CC3D5 /* MerchantDataProviding.swift in Sources */,
+				BAC68CCB99AC7423B5BE31B4 /* MockVoiceAgentService.swift in Sources */,
+				02369ACEA0333789D2F239AF /* PointPilotApp.swift in Sources */,
+				0CD6B7499EB7770A70760CE8 /* RecommendationEngine.swift in Sources */,
+				8385E958547081BA3751B15D /* RecommendationView.swift in Sources */,
+				99563F3850BD76B92605AFBA /* Rewards.swift in Sources */,
+				DAA982CF84E29BE7A0C1E72E /* SampleDataRepository.swift in Sources */,
+				DC524D37E10C5BC6678C727B /* Theme.swift in Sources */,
+				98A2E8C601AEF4A410F4E614 /* VoiceAgentProviding.swift in Sources */,
+				A6D295F9A31625BE8245B454 /* WalletView.swift in Sources */,
+				8A143498CE59F1A9F969352D /* YelpFusionService.swift in Sources */,
+				A91CD46477C6C96F66E5E428 /* YelpModels.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D990361554B8E730240500E1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4E3A2A088C8C0182CF253D41 /* AppEnvironmentTests.swift in Sources */,
+				68E7DD18C1005656C5EF2AE0 /* LocationAndDiscoveryTests.swift in Sources */,
+				33BE64C8202203076FACD014 /* RecommendationEngineTests.swift in Sources */,
+				2F35AA77B545D70447B68963 /* VoiceTranscriptTests.swift in Sources */,
+				C906B1B07FE223D909AA9365 /* YelpFusionServiceTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3AA4D15D72147D4291C40940 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9379091939FC2417DB62CF7A /* PointPilot */;
+			targetProxy = 8B013105486867691B029987 /* PBXContainerItemProxy */;
+		};
+		C4360835AACDA7BE21BD53E4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9379091939FC2417DB62CF7A /* PointPilot */;
+			targetProxy = DA916AE77BA320AE14818D91 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		035200A7A2132A43BB36E91F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.PointPilotUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = PointPilot;
+			};
+			name = Debug;
+		};
+		2D4BD6EA778D9462116B4BB8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.PointPilotUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = PointPilot;
+			};
+			name = Release;
+		};
+		42F9B0F6B1FB4DB5C27F3E28 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		4F1F602885C06385F9CC22C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = PointPilot;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "PointPilot uses your location to discover nearby restaurants and calculate your best credit card rewards.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "PointPilot listens so you can say where you are and how much you plan to spend, then recommends a card.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "PointPilot uses speech recognition to understand the restaurant and amount you say.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.PointPilot;
+				PRODUCT_NAME = PointPilot;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		70FE2DF614526BC58EEEC9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.PointPilotTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PointPilot.app/PointPilot";
+			};
+			name = Release;
+		};
+		935172AA398EF8635969F366 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = PointPilot;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "PointPilot uses your location to discover nearby restaurants and calculate your best credit card rewards.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "PointPilot listens so you can say where you are and how much you plan to spend, then recommends a card.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "PointPilot uses speech recognition to understand the restaurant and amount you say.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.PointPilot;
+				PRODUCT_NAME = PointPilot;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		A44D63D050453A5991A4A441 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		F1EFD1FD3A1F0A8AABF3DDC6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.PointPilotTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PointPilot.app/PointPilot";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3943BB31A8D894D8541D3ED1 /* Build configuration list for PBXNativeTarget "PointPilotUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				035200A7A2132A43BB36E91F /* Debug */,
+				2D4BD6EA778D9462116B4BB8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		892059A951D6CFC21FB9C6A4 /* Build configuration list for PBXNativeTarget "PointPilotTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F1EFD1FD3A1F0A8AABF3DDC6 /* Debug */,
+				70FE2DF614526BC58EEEC9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BEE5421B23018276AA731F16 /* Build configuration list for PBXProject "PointPilot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42F9B0F6B1FB4DB5C27F3E28 /* Debug */,
+				A44D63D050453A5991A4A441 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E1A500AB5EEAB5891689BD4A /* Build configuration list for PBXNativeTarget "PointPilot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F1F602885C06385F9CC22C2 /* Debug */,
+				935172AA398EF8635969F366 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 112AB46349A02F0CD941740B /* Project object */;
+}
