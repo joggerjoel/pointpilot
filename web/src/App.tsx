@@ -4,8 +4,12 @@ import { FindCardView } from './views/FindCardView'
 import { MetricsView } from './views/MetricsView'
 import { WalletView } from './views/WalletView'
 import { demoMetrics } from './lib/metrics'
-import { MockVoiceAgent } from './lib/voice'
+import { MockVoiceAgent, RealVoiceAgent, type VoiceAgent } from './lib/voice'
 import { sampleCards } from './lib/sampleData'
+
+// Detect if ElevenLabs is configured via environment variables for the frontend
+const isElevenLabsConfiguredFrontend = import.meta.env.VITE_ELEVENLABS_AGENT_ID !== undefined &&
+                                       import.meta.env.VITE_ELEVENLABS_AGENT_ID !== 'YOUR_ELEVENLABS_AGENT_ID_HERE'
 
 /**
  * The app shell: one place decides which screen is showing and owns the state
@@ -27,7 +31,13 @@ export function App() {
   const metrics = useMemo(() => demoMetrics(), [])
 
   // One voice agent for the session, so its transcript survives navigation.
-  const voice = useMemo(() => new MockVoiceAgent(), [])
+  const voice: VoiceAgent = useMemo(() => {
+    if (isElevenLabsConfiguredFrontend) {
+      return new RealVoiceAgent()
+    } else {
+      return new MockVoiceAgent()
+    }
+  }, [])
 
   return (
     <div className="app">

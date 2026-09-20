@@ -31,3 +31,4 @@ Package.resolved
 
 # The generated project is reproducible from project.yml via `xcodegen generate`,
 # but it is committed so the project opens without extra tooling.
+/backend/venv

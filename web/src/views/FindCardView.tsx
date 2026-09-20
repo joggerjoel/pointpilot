@@ -4,7 +4,7 @@ import { recommend, offerShortDescription, RecommendationError } from '../lib/en
 import { parseAmount } from '../lib/sampleData'
 import { COMPONENT_DISPLAY, CATEGORY_DISPLAY, subjectForCategory } from '../lib/types'
 import type { CardRecommendation } from '../lib/types'
-import type { MockVoiceAgent, VoiceMessage, VoiceState } from '../lib/voice'
+import { type VoiceAgent, type VoiceMessage, type VoiceState } from '../lib/voice'
 import { Illustration } from '../components/Illustration'
 import { CountUpCurrency } from '../components/CountUpCurrency'
 
@@ -31,7 +31,7 @@ const SUGGESTIONS = [
  * present as a simulated agent so the conversational flow is demonstrable, and
  * its transcript says so plainly.
  */
-export function FindCardView({ voice }: { voice: MockVoiceAgent }) {
+export function FindCardView({ voice }: { voice: VoiceAgent }) {
   const [merchant, setMerchant] = useState('')
   const [amount, setAmount] = useState('')
   const [result, setResult] = useState<CardRecommendation | null>(null)
@@ -40,13 +40,23 @@ export function FindCardView({ voice }: { voice: MockVoiceAgent }) {
   const [voiceState, setVoiceState] = useState<VoiceState>({ kind: 'idle' })
   const [messages, setMessages] = useState<VoiceMessage[]>([])
   const [utterance, setUtterance] = useState('')
+  const [isRecording, setIsRecording] = useState(false)
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null)
+  const audioChunksRef = useRef<Blob[]>([])
 
   const resultRef = useRef<HTMLDivElement>(null)
 
   // Wire the agent's callbacks once. The agent supplies the inputs; this view
   // computes the answer through the engine.
   useEffect(() => {
-    voice.onStateChange = setVoiceState
+    voice.onStateChange = (state) => {
+      setVoiceState(state)
+      // If agent is listening and we are recording, it means agent is ready for audio.
+      // We can stop recording now, as the ElevenLabs SDK will handle microphone input itself.
+      if (state.kind === 'listening' && voice.isConfigured && isRecording) {
+        stopRecording()
+      }
+    }
     voice.onMessage = (message) => {
       // Newest first, and drop an immediate repeat of the same line.
       setMessages((prev) => {
@@ -73,7 +83,41 @@ export function FindCardView({ voice }: { voice: MockVoiceAgent }) {
       voice.onActivationRequest = undefined
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [voice])
+  }, [voice, isRecording])
+
+  const startRecording = async () => {
+    if (!voice.isConfigured || !navigator.mediaDevices) return
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      // In a real scenario, the ElevenLabs SDK handles streaming the microphone input directly.
+      // For now, this part is illustrative for local recording purposes if needed.
+      mediaRecorderRef.current = new MediaRecorder(stream)
+      audioChunksRef.current = []
+
+      mediaRecorderRef.current.ondataavailable = (event) => {
+        audioChunksRef.current.push(event.data)
+      }
+
+      mediaRecorderRef.current.onstop = () => {
+        // Audio chunks can be processed here if not using SDK's direct streaming.
+        audioChunksRef.current = []
+      }
+
+      mediaRecorderRef.current.start()
+      setIsRecording(true)
+    } catch (err) {
+      console.error('Error accessing microphone:', err)
+      voice.onStateChange?.({ kind: 'unavailable', message: 'Microphone access denied.' })
+    }
+  }
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current?.state === 'recording') {
+      mediaRecorderRef.current.stop()
+      setIsRecording(false)
+    }
+  }
 
   function run(merchantQuery: string, amountValue: number): void {
     try {
@@ -94,6 +138,13 @@ export function FindCardView({ voice }: { voice: MockVoiceAgent }) {
 
   function submitTyped(event: React.FormEvent): void {
     event.preventDefault()
+    // If a real voice agent is configured and active, typed input is sent through it.
+    if (voice.isConfigured && voiceState.kind !== 'idle' && voiceState.kind !== 'unavailable') {
+      voice.send(utterance)
+      setUtterance('')
+      return
+    }
+    // Otherwise, fallback to the traditional typed input submission.
     const parsed = parseAmount(amount)
     if (parsed === null) {
       setError('Enter a purchase amount greater than $0.00.')
@@ -103,361 +154,279 @@ export function FindCardView({ voice }: { voice: MockVoiceAgent }) {
     run(merchant.trim(), parsed / MICRO)
   }
 
-  /**
-   * Activates an offer — through the agent when one is running.
-   *
-   * With voice live this must go via the agent so the user is asked to confirm,
-   * matching the iOS `requestActivationConfirmation` behaviour. With voice idle
-   * there is nobody to ask, so it happens directly.
-   */
-  function activateOffer(offerID: string): void {
-    if (voiceState.kind !== 'idle') {
-      const offer = result?.winner.offerRequiringActivation
-      voice.requestActivation(
-        offerID,
-        offer ? offerShortDescription(offer) : 'this offer',
-      )
-      return
+  function onToggleVoice(): void {
+    if (voiceState.kind !== 'idle' && voiceState.kind !== 'unavailable') {
+      voice.stop()
+      stopRecording()
+    } else {
+      voice.start()
     }
-    setActivatedOfferID(offerID)
   }
 
-  function askAnother(): void {
-    setResult(null)
-    setError(null)
+  function onActivate(offerID: string, label: string): void {
+    if (voice.isConfigured) {
+      voice.requestActivation(offerID, label)
+    } else {
+      // Fallback for mock agent, which handles its own confirmation flow.
+      voice.onActivationRequest?.(offerID) // Direct activation for mock if no confirmation needed
+    }
+  }
+
+  function onAskAnother(): void {
     setMerchant('')
     setAmount('')
+    setResult(null)
+    setError(null)
     setActivatedOfferID(null)
     setMessages([])
+    setUtterance('')
+    // Do not reset voiceState here, let the agent manage its own state.
   }
 
-  const isBusy = voiceState.kind !== 'idle'
+  const microphoneStatusText = voiceState.kind === 'unavailable' && voiceState.message.includes('Microphone')
+    ? 'Microphone access denied.'
+    : voiceState.kind === 'unavailable'
+      ? voiceState.message
+      : undefined
+
+  // Determine if the microphone icon should be active based on voice state and recording status
+  const isMicrophoneActive = voice.isConfigured ? (voiceState.kind === 'listening' || voiceState.kind === 'speaking') : isRecording;
 
   return (
-    <div className="stack">
-      <section className="stack-tight">
-        <h1 className="display">Which card should I use?</h1>
-        <p className="muted">
-          Tell me where you are and what you'll spend, and I'll pick your best
-          card.
-        </p>
-      </section>
+    <section className="card-finder">
+      <h1 className="card-finder-headline">Which card should I use?</h1>
 
-      {/* Voice — simulated, keyless, and labelled as such. */}
-      <section className="card stack-tight center-stack">
+      <div className="voice-input">
         <button
-          className={isBusy ? 'mic is-live' : 'mic'}
-          onClick={() => (isBusy ? voice.stop() : voice.start())}
-          aria-label={isBusy ? 'Stop the simulated voice agent' : 'Start the simulated voice agent'}
+          className="voice-button"
+          onClick={onToggleVoice}
+          disabled={voiceState.kind === 'unavailable' && !voiceState.message.includes('Microphone')}
+          aria-label={voiceState.kind === 'listening' ? 'Stop voice input' : 'Start voice input'}
         >
-          <span aria-hidden="true">{isBusy ? '◉' : '🎙'}</span>
+          {isMicrophoneActive ? (
+            <span className="icon-microphone-active" aria-hidden="true"></span>
+          ) : (
+            <span className="icon-microphone" aria-hidden="true"></span>
+          )}
+          <span className="voice-status-text">
+            {voiceState.kind === 'listening'
+              ? 'Speak now…'
+              : voiceState.kind === 'thinking'
+                ? 'Thinking…'
+                : voiceState.kind === 'speaking'
+                  ? 'Speaking…'
+                  : voiceState.kind === 'unavailable'
+                    ? 'Voice unavailable'
+                    : 'Tap to speak'}
+          </span>
         </button>
-        <p className="voice-status">{voiceStatusText(voiceState)}</p>
+        {microphoneStatusText && (
+          <p className="voice-notice notice notice-error">
+            {microphoneStatusText}
+          </p>
+        )}
 
-        <p className="notice notice-info">
-          Voice is simulated in the browser — no microphone is used and nothing
-          is recorded. Typing below is the full experience.
-        </p>
+        {!voice.isConfigured && (
+          <p className="voice-notice notice notice-info">
+            Voice is simulated in the browser — no microphone is used and nothing
+            is recorded. Typing below is the full experience.
+          </p>
+        )}
 
-        {isBusy && (
-          <form
-            className="voice-input"
-            onSubmit={(e) => {
-              e.preventDefault()
-              if (utterance.trim() === '') return
-              voice.send(utterance)
-              setUtterance('')
-            }}
-          >
+        {voice.isConfigured && voiceState.kind !== 'idle' && voiceState.kind !== 'unavailable' && (
+          <div className="transcript">
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`transcript-line speaker-${message.speaker}`}
+              >
+                <span className="speaker">{message.speaker === 'you' ? 'You' : 'PointPilot'}:</span>
+                <span className="text">{message.text}</span>
+                <time className="timestamp" dateTime={message.at.toISOString()}>
+                  {message.at.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </time>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {voice.isConfigured && voiceState.kind !== 'idle' && voiceState.kind !== 'unavailable' && (
+          <form onSubmit={submitTyped} className="voice-text-input">
             <input
-              className="field"
+              type="text"
               value={utterance}
               onChange={(e) => setUtterance(e.target.value)}
-              placeholder="Type what you'd say, e.g. I'm at Nobu and spending $200"
-              aria-label="Say something to the simulated voice agent"
+              placeholder={voiceState.kind === 'listening' ? 'Say something…' : 'Type your reply…'}
+              autoFocus
+              disabled={voiceState.kind === 'thinking' || voiceState.kind === 'speaking'}
+              aria-label="Type your reply"
             />
-            <button className="btn" type="submit">
-              Say it
+            <button
+              type="submit"
+              disabled={utterance.trim().length === 0 || voiceState.kind === 'thinking' || voiceState.kind === 'speaking'}
+            >
+              Send
             </button>
           </form>
         )}
+      </div>
 
-        {messages.length > 0 && (
-          <div className="transcript" aria-label="Conversation history, most recent first">
-            {messages.slice(0, 4).map((message) => (
-              <div key={message.id} className="transcript-line">
-                <div className="spread">
-                  <span className="muted tiny">
-                    {message.speaker === 'you' ? 'You' : 'PointPilot'}
-                  </span>
-                  <span className="muted tiny mono">
-                    {message.at.toLocaleTimeString([], {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
-                  </span>
-                </div>
-                <p className="small">{message.text}</p>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
-
-      {/* Typed path — the reliable one. */}
-      <section className="card stack-tight">
-        <h2 className="section-title">Or choose / type</h2>
-
-        <div className="chips" role="group" aria-label="Nearby restaurants">
-          {NEARBY.map((m) => (
+      <div className="typed-input">
+        <p className="typed-input-header">Or pick from nearby, or type it</p>
+        <div className="nearby-chips">
+          {NEARBY.map((merchant) => (
             <button
-              key={m.id}
-              className={merchant.toLowerCase() === m.name.toLowerCase() ? 'chip is-active' : 'chip'}
-              onClick={() => setMerchant(m.name)}
-              aria-label={`${m.name}${m.hasOffer ? ', active card offer available' : ''}`}
+              key={merchant.id}
+              className="chip"
+              onClick={() => setMerchant(merchant.name)}
             >
-              {m.hasOffer && <span aria-hidden="true">🏷 </span>}
-              {m.name}
+              {merchant.hasOffer && (
+                <span className="chip-tag" aria-hidden="true"></span>
+              )}
+              {merchant.name}
             </button>
           ))}
         </div>
 
-        <form className="stack-tight" onSubmit={submitTyped}>
-          <label className="field-label" htmlFor="merchant">
-            Restaurant or merchant
+        <form onSubmit={submitTyped} className="form-fields">
+          <label htmlFor="merchant-input" className="sr-only">
+            Restaurant, e.g. Nobu
           </label>
           <input
-            id="merchant"
-            className="field"
+            type="text"
+            id="merchant-input"
+            placeholder="Restaurant, e.g. Nobu"
             value={merchant}
             onChange={(e) => setMerchant(e.target.value)}
-            placeholder="Restaurant, e.g. Nobu"
+            autoCapitalize="words"
           />
-          <label className="field-label" htmlFor="amount">
-            Purchase amount
+
+          <label htmlFor="amount-input" className="sr-only">
+            Amount, e.g. $200
           </label>
           <input
-            id="amount"
-            className="field"
-            inputMode="decimal"
+            type="text"
+            id="amount-input"
+            placeholder="Amount, e.g. $200"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            placeholder="e.g. 200"
+            inputMode="decimal"
           />
-          <button className="btn btn-primary btn-block" type="submit">
-            Find my best card
+
+          <button type="submit" className="btn btn-primary btn-block">
+            Find My Best Card
           </button>
         </form>
 
-        {error && (
-          <p className="notice notice-warn" role="alert">
-            {error}
-          </p>
-        )}
-      </section>
+        {error && <p className="notice notice-error">{error}</p>}
 
-      {result && (
-        <ResultCard
-          recommendation={result}
-          activatedOfferID={activatedOfferID}
-          onActivate={activateOffer}
-          onAskAnother={askAnother}
-          ref={resultRef}
-        />
-      )}
+        {result && (
+          <section ref={resultRef} tabIndex={-1} className="recommendation">
+            <h2 className="recommendation-headline">
+              Use {result.winner.card.name}
+            </h2>
+            <Illustration category={result.winner.category} />
+            <p className="recommendation-value">
+              Estimated value:{' '}
+              <CountUpCurrency value={format(result.winner.totalValue)} />
+            </p>
+            <p className="recommendation-breakdown-toggle">
+              <button
+                onClick={() => setShowBreakdown(!showBreakdown)}
+                aria-expanded={showBreakdown}
+                aria-controls="breakdown-details"
+              >
+                {showBreakdown ? 'Hide breakdown' : 'Show breakdown'}
+              </button>
+            </p>
 
-      <section className="stack-tight">
-        <h2 className="section-title">Try saying</h2>
-        <div className="chips">
-          {SUGGESTIONS.map((s) => (
-            <button
-              key={s}
-              className="chip"
-              onClick={() => {
-                if (!isBusy) voice.start()
-                voice.send(s)
-              }}
-            >
-              “{s}”
+            {showBreakdown && (
+              <dl id="breakdown-details" className="recommendation-breakdown">
+                {result.winner.components.map((component) => (
+                  <div
+                    key={component.kind + (component.offerID || '')}
+                    className="breakdown-item"
+                  >
+                    <dt className="breakdown-item-label">
+                      {COMPONENT_DISPLAY[component.kind]}
+                    </dt>
+                    <dd className="breakdown-item-value">
+                      {formatSigned(component.value)}
+                    </dd>
+                  </div>
+                ))}
+                <div className="breakdown-item breakdown-item-total">
+                  <dt className="breakdown-item-label">Total</dt>
+                  <dd className="breakdown-item-value">
+                    {format(result.winner.totalValue)}
+                  </dd>
+                </div>
+              </dl>
+            )}
+
+            {result.runnerUp && (
+              <section className="recommendation-runner-up">
+                <h3>
+                  Runner-up: {result.runnerUp.card.name} ({format(result.runnerUp.totalValue)})
+                </h3>
+                <p className="recommendation-runner-up-advantage">
+                  Advantage: {format(result.winner.totalValue - result.runnerUp.totalValue)}
+                </p>
+              </section>
+            )}
+
+            {result.winner.offer && (
+              <div className="recommendation-offer">
+                <h3>Merchant offer</h3>
+                <p>
+                  Earn {offerShortDescription(result.winner.offer)}. Up to {format(result.winner.offer.maximumValue ?? result.winner.totalValue)}.
+                </p>
+                <button
+                  className="btn btn-primary btn-block"
+                  disabled={activatedOfferID === result.winner.offer.id}
+                  onClick={() => onActivate(result.winner.offer!.id, offerShortDescription(result.winner.offer!))}
+                >
+                  {activatedOfferID === result.winner.offer.id
+                    ? '✓ Activated (simulated)'
+                    : 'Activate offer'}
+                </button>
+                <p className="muted tiny">
+                  Demo action — this does not activate anything with your card issuer.
+                </p>
+              </div>
+            )}
+
+            {result.warnings.map((warning) => (
+              <p key={warning} className="notice notice-info">
+                {warning}
+              </p>
+            ))}
+
+            <button className="btn btn-block" onClick={onAskAnother}>
+              Ask another
             </button>
-          ))}
-        </div>
-      </section>
-    </div>
+
+            <p className="muted tiny center">
+              Points and miles are valued at the sample rates: e.g.{' '}
+              {formatRate(1_000_000 * 0.0175)} per point on the Sapphire Preferred.
+            </p>
+          </section>
+        )}
+      </div>
+    </section>
   )
 }
 
-function voiceStatusText(state: VoiceState): string {
-  switch (state.kind) {
-    case 'idle':
-      return 'Tap to talk (simulated)'
-    case 'listening':
-      return 'Listening…'
-    case 'thinking':
-      return 'Working that out…'
-    case 'speaking':
-      return 'Speaking…'
-    case 'unavailable':
-      return state.message
-  }
-}
-
-function ResultCard({
-  recommendation,
-  activatedOfferID,
-  onActivate,
-  onAskAnother,
-  ref,
-}: {
-  recommendation: CardRecommendation
-  activatedOfferID: string | null
-  onActivate: (id: string) => void
-  onAskAnother: () => void
-  ref: React.RefObject<HTMLDivElement>
-}) {
-  const [showMath, setShowMath] = useState(false)
-  const winner = recommendation.winner
-  const offer = winner.offerRequiringActivation
-
+function HiddenBreakdownToggle({ showBreakdown, setShowBreakdown }: { showBreakdown: boolean; setShowBreakdown: (show: boolean) => void }) {
   return (
-    <section className="stack" ref={ref} tabIndex={-1} aria-live="polite">
-      <div className={`cardface accent-${winner.card.id}`}>
-        <span className="cardface-name">{winner.card.name}</span>
-        <span className="cardface-rate">
-          {formatMultiplier(
-            (winner.card.multipliers[recommendation.category] ??
-              winner.card.defaultMultiplier) * 1_000_000,
-          )}{' '}
-          {winner.card.rewardUnitName} on{' '}
-          {CATEGORY_DISPLAY[recommendation.category].toLowerCase()}
-        </span>
-        <span className="cardface-note">Sample card</span>
-      </div>
-
-      <div className="card">
-        <div className="row row-static row-top">
-          <span className="row-text">
-            <span className="muted">Estimated reward value</span>
-            <CountUpCurrency value={winner.totalValue} className="display" />
-            <span className="muted small">
-              at {recommendation.merchantName} on {format(recommendation.amount)}
-            </span>
-            {recommendation.runnerUp && (
-              <span
-                className={
-                  recommendation.advantageOverRunnerUp > 0
-                    ? 'amount-good'
-                    : 'muted small'
-                }
-              >
-                {recommendation.advantageOverRunnerUp > 0
-                  ? `${format(recommendation.advantageOverRunnerUp)} more than your ${recommendation.runnerUp.card.name}`
-                  : `Tied with your ${recommendation.runnerUp.card.name}`}
-              </span>
-            )}
-          </span>
-          <Illustration
-            subject={subjectForCategory(recommendation.category)}
-            size={72}
-          />
-        </div>
-      </div>
-
-      {recommendation.ranked.length > 1 && (
-        <div className="card list-card">
-          <h2 className="section-title">How the others compare</h2>
-          {recommendation.ranked.slice(1).map((evaluation, index) => (
-            <div key={evaluation.card.id}>
-              {index > 0 && <div className="divider" />}
-              <div className="spread row-pad">
-                <span>{evaluation.card.name}</span>
-                <span className="amount mono">{format(evaluation.totalValue)}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      <div className="card stack-tight">
-        <h2 className="section-title">Why this card?</h2>
-        <p className="muted">{recommendation.explanation}</p>
-      </div>
-
-      <div className="card stack-tight">
-        <button
-          className="btn btn-ghost"
-          onClick={() => setShowMath((s) => !s)}
-          aria-expanded={showMath}
-        >
-          ƒ See the math
-        </button>
-
-        {showMath && (
-          <div className="stack-tight">
-            {winner.components.map((component, index) => (
-              <div key={`${component.kind}-${index}`}>
-                <div className="spread row-pad">
-                  <span className="row-text">
-                    <span className="row-title">
-                      {COMPONENT_DISPLAY[component.kind]}
-                    </span>
-                    <span className="muted tiny">{component.label}</span>
-                  </span>
-                  <span
-                    className={
-                      component.amount < 0 ? 'mono muted' : 'mono'
-                    }
-                  >
-                    {formatSigned(component.amount)}
-                  </span>
-                </div>
-                <div className="divider" />
-              </div>
-            ))}
-            <div className="spread strong">
-              <span>Total estimated value</span>
-              <span className="mono">{format(winner.totalValue)}</span>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {offer && (
-        <div className="card stack-tight">
-          <h2 className="section-title">This offer needs activation</h2>
-          <p className="muted">
-            {offerShortDescription(offer)} at {recommendation.merchantName}, worth
-            up to {format(offer.maximumValue ?? winner.totalValue)}.
-          </p>
-          <button
-            className="btn btn-primary btn-block"
-            disabled={activatedOfferID === offer.id}
-            onClick={() => onActivate(offer.id)}
-          >
-            {activatedOfferID === offer.id
-              ? '✓ Activated (simulated)'
-              : 'Activate offer'}
-          </button>
-          <p className="muted tiny">
-            Demo action — this does not activate anything with your card issuer.
-          </p>
-        </div>
-      )}
-
-      {recommendation.warnings.map((warning) => (
-        <p key={warning} className="notice notice-info">
-          {warning}
-        </p>
-      ))}
-
-      <button className="btn btn-block" onClick={onAskAnother}>
-        Ask another
+    <p className="recommendation-breakdown-toggle">
+      <button
+        onClick={() => setShowBreakdown(!showBreakdown)}
+        aria-expanded={showBreakdown}
+        aria-controls="breakdown-details"
+      >
+        {showBreakdown ? 'Hide breakdown' : 'Show breakdown'}
       </button>
-
-      <p className="muted tiny center">
-        Points and miles are valued at the sample rates: e.g.{' '}
-        {formatRate(1_000_000 * 0.0175)} per point on the Sapphire Preferred.
-      </p>
-    </section>
+    </p>
   )
 }

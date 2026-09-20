@@ -39,6 +39,7 @@
 		C906B1B07FE223D909AA9365 /* YelpFusionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A7F93B7338236C4272D32C /* YelpFusionServiceTests.swift */; };
 		DAA982CF84E29BE7A0C1E72E /* SampleDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FB6287D654E8ED7D76C633 /* SampleDataRepository.swift */; };
 		DC524D37E10C5BC6678C727B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9480A30886F89A83BD2F1597 /* Theme.swift */; };
+		F426FAC4A3AAB40388C5A605 /* VoiceServiceProbeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4391D7E1D70E5A35D4C5B51 /* VoiceServiceProbeTests.swift */; };
 		F7CB3344DA988A7436115EF6 /* AskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDBB5559114DD8D01B9F2E1 /* AskView.swift */; };
 		FADDAFD980ECA4DC40FF7587 /* ElevenLabs in Frameworks */ = {isa = PBXBuildFile; productRef = 084F23767ABEC765B7A30D56 /* ElevenLabs */; };
 /* End PBXBuildFile section */
@@ -97,6 +98,7 @@
 		EE5AE35899F0B676E63239BA /* DemoFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoFlowUITests.swift; sourceTree = "<group>"; };
 		EF053D6B3F89FDA866A00F80 /* PointPilotTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PointPilotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F28FAD1FFE97CF9DEE396D3F /* MockVoiceAgentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockVoiceAgentService.swift; sourceTree = "<group>"; };
+		F4391D7E1D70E5A35D4C5B51 /* VoiceServiceProbeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceServiceProbeTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -251,6 +253,7 @@
 				B245FDC0F3EF185B433750A7 /* AppEnvironmentTests.swift */,
 				E7D53CB57FAD3FAE455A4567 /* LocationAndDiscoveryTests.swift */,
 				8BEFE8DC75FB770D830EF5B4 /* RecommendationEngineTests.swift */,
+				F4391D7E1D70E5A35D4C5B51 /* VoiceServiceProbeTests.swift */,
 				DB343D3962A0FB72AA11B537 /* VoiceTranscriptTests.swift */,
 				27A7F93B7338236C4272D32C /* YelpFusionServiceTests.swift */,
 			);
@@ -436,6 +439,7 @@
 				4E3A2A088C8C0182CF253D41 /* AppEnvironmentTests.swift in Sources */,
 				68E7DD18C1005656C5EF2AE0 /* LocationAndDiscoveryTests.swift in Sources */,
 				33BE64C8202203076FACD014 /* RecommendationEngineTests.swift in Sources */,
+				F426FAC4A3AAB40388C5A605 /* VoiceServiceProbeTests.swift in Sources */,
 				2F35AA77B545D70447B68963 /* VoiceTranscriptTests.swift in Sources */,
 				C906B1B07FE223D909AA9365 /* YelpFusionServiceTests.swift in Sources */,
 			);
